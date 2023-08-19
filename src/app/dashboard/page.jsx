@@ -59,9 +59,9 @@ const Dashboard = () => {
   const handleSubmit = async(e) => {
     e.preventDefault();
     const title = e.target[0].value;
-    const desc = e.target[0].value;
-    const img = e.target[0].value;
-    const content = e.target[0].value;
+    const desc = e.target[1].value;
+    const img = e.target[2].value;
+    const content = e.target[3].value;
 
     try {
       await fetch("/api/posts", {
@@ -100,11 +100,22 @@ const Dashboard = () => {
         <div className={styles.posts}>
           {isLoading ? "loading" : data.map((post) => (
             <div className={styles.posts} key={post._id}>
-              <div className={styles.ingContainer}>
-                <Image src={post.img} alt="" width={200} height={150}/>
+              <div className={styles.ingContainer}>                
+                <Image
+                  src={post.img} 
+                  alt=""
+                  width={200}
+                  height={150}
+                  unoptimized={true}                  
+                  onError={(e) => {
+                    e.target.onerror = null;
+                    e.target.src = '/placeholder.jpg';                    
+                  }}
+                />
               </div>
               <h2 className={styles.postTitle}>{post.title}</h2>
-              <span className={styles.delete} onClick={() => handleDelete(post._id)}>X</span>``
+              <h3 className={styles.postTitle}>{post.desc}</h3>
+              <span className={styles.delete} onClick={() => handleDelete(post._id)}>X</span>
             </div>
           ))}
         </div>
